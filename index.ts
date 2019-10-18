@@ -69,9 +69,9 @@ class DrawingUtil {
     }
 
     static drawBlock(context : CanvasRenderingContext2D, x : number, h : number, size : number, sc : number) {
-        const y : number = -(h - size) * ScaleUtil.sinify(sc)
+        const y : number = -(h - 2 * size) * ScaleUtil.sinify(sc)
         context.save()
-        context.translate(x, y)
+        context.translate(x, y - size)
         context.fillRect(-size, -size, 2 * size, 2 * size)
         context.restore()
     }
@@ -85,9 +85,9 @@ class DrawingUtil {
         context.fillStyle = foreColor
         context.save()
         context.translate(gap * (i + 1), h / 2)
-        DrawingUtil.drawBlock(context, 0, h / 2, size, scale)
+        DrawingUtil.drawBlock(context, 0, h / 2, size, ScaleUtil.divideScale(scale, 0, 2))
         DrawingUtil.drawLine(context, -size, 0, size, 0)
-        DrawingUtil.drawArc(context, 0, 0, size, scale)
+        DrawingUtil.drawArc(context, 0, 0, size, ScaleUtil.divideScale(scale, 1, 2))
         context.restore()
     }
 }
