@@ -215,3 +215,25 @@ class ArcBounceSweep {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    abs : ArcBounceSweep = new ArcBounceSweep()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.abs.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.abs.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.abs.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
