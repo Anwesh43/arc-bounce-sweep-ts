@@ -49,12 +49,12 @@ class DrawingUtil {
     }
 
     static drawArc(context : CanvasRenderingContext2D, x : number, y : number, r : number, sc : number) {
-        const sf : number = Math.sin(sc * Math.PI)
+        const updatingDeg : number = MAXDEG * ScaleUtil.sinify(sc)
         context.save()
         context.translate(x, y)
         context.beginPath()
         context.moveTo(0, 0)
-        for (var i = 0; i <= MAXDEG * sf; i++) {
+        for (var i = 0; i <= updatingDeg; i++) {
             const xr : number = r * Math.cos(i * Math.PI / 180)
             const yr : number = r * Math.sin(i * Math.PI / 180)
             context.lineTo(xr, yr)
@@ -64,8 +64,7 @@ class DrawingUtil {
     }
 
     static drawBlock(context : CanvasRenderingContext2D, x : number, h : number, size : number, sc : number) {
-        const sf : number = Math.sin(sc * Math.PI)
-        const y : number = -(h - size) * sf
+        const y : number = -(h - size) * ScaleUtil.sinify(sc)
         context.save()
         context.translate(x, y)
         context.fillRect(-size, -size, 2 * size, 2 * size)
@@ -85,5 +84,20 @@ class DrawingUtil {
         DrawingUtil.drawLine(context, -size, 0, size, 0)
         DrawingUtil.drawArc(context, 0, 0, size, scale)
         context.restore()
+    }
+}
+
+class ScaleUtil {
+
+    static maxScale(scale : number, i : number, n : number) {
+        return Math.max(0, scale - i / n)
+    }
+
+    static divideScale(scale : number, i : number, n : number) {
+        return Math.min(1 / n, ScaleUtil.maxScale(scale, i, n)) * n
+    }
+
+    static sinify(scale : number) {
+        return Math.sin(scale * Math.PI)
     }
 }
